@@ -34,10 +34,19 @@ when you need `git log`, `git blame` or `Fixes:` tags:
 
 ```sh
 sudo apt install build-essential flex bison bc libelf-dev libssl-dev \
-    dwarves cpio qemu-system-x86 git git-email clangd universal-ctags cscope pipx
+    dwarves cpio kmod udev iproute2 qemu-system-x86 \
+    git git-email clangd universal-ctags cscope pipx
 pipx install virtme-ng          # provides the `vng` command
 pipx ensurepath                 # then open a new shell
 ```
+
+`kmod`, `udev` and `iproute2` are already there on a normal Ubuntu install, but
+minimal WSL or VM images may lack them; `vng` fails without them (`depmod: not
+found`, or exit code 255 with no output).
+
+On an Apple Silicon Mac the Linux VM is arm64: install `qemu-system-arm`
+instead of `qemu-system-x86`. `vng` builds and boots an arm64 kernel the same
+way.
 
 Minimum tool versions are listed in `Documentation/process/changes.rst`.
 
@@ -46,7 +55,7 @@ Minimum tool versions are listed in `Documentation/process/changes.rst`.
 ```sh
 git remote add upstream https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 git remote add net-next https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
-git fetch upstream
+git fetch upstream               # several GB; not needed until your first patch
 ```
 
 `origin` is the GitHub fork. Patches for networking are based on `net` (fixes)
@@ -58,10 +67,32 @@ virtme-ng builds a minimal config and boots the kernel in QEMU, sharing your
 host filesystem read-only, so there is no disk image to manage.
 
 ```sh
-vng --build                      # configure + build a minimal kernel
-vng                              # boot it, you get a shell inside the VM
-uname -r                         # inside the VM
+cd ~/linux
+vng --build --configitem 'CONFIG_LOCALVERSION="-learning"'
+vng                              # boot it; you get a shell inside the VM
+uname -r                         # inside the VM: 7.3.0-rc6-learning-virtme
+exit                             # powers the VM off
+vng -- uname -r                  # or: boot, run one command, power off
 ```
+
+`vng` appends `-virtme` to the version string. Rebuild with the same
+`vng --build ...` command; plain `make` uses a different version string and
+recompiles more than it needs to.
+
+Timings checked on this tree (v7.3-rc6, 4 CPU cores, 15 GB RAM, no KVM):
+
+| Step | Time |
+| --- | --- |
+| First `vng --build` | ~12 min |
+| Rebuild after changing one `.c` file | ~1.5 min |
+| Rebuild with nothing changed | ~5 s |
+| Boot to shell | ~6 s |
+
+If `/dev/kvm` doesn't exist (no hardware virtualization, common in VMs), add
+`--disable-kvm` to `vng`. It runs slower but works.
+
+To keep files the VM writes (ftrace output, test logs), share a directory:
+`vng --rwdir ~/linux-out`.
 
 Without virtme-ng:
 
