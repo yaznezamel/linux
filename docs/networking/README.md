@@ -32,7 +32,7 @@ Each step: read the code, run it, write a note with
 | --- | --- | --- | --- |
 | 1 | `Documentation/networking/skbuff.rst`, then `include/linux/skbuff.h` (the struct and `skb_put`/`skb_push`/`skb_pull`) | Doc + header | Every function in the stack takes an `sk_buff` |
 | 2 | `Documentation/networking/netdevices.rst`, `struct net_device_ops` in `include/linux/netdevice.h` | Doc + header | The interface every driver implements |
-| 3 | `drivers/net/dummy.c` | 200 lines | A complete driver: setup, xmit, stats, rtnl_link_ops, module params |
+| 3 | `drivers/net/dummy.c`, guided: [01-dummy-driver.md](01-dummy-driver.md) | 200 lines | A complete driver: setup, xmit, stats, rtnl_link_ops, module params |
 | 4 | `drivers/net/loopback.c` | 292 lines | A device that transmits back into receive (`loopback_xmit()` → `__netif_rx()`) |
 | 5 | `drivers/net/veth.c` (`veth_xmit()` and NAPI parts) | ~2000 lines | Two linked devices; how containers get networking |
 | 6 | `Documentation/networking/napi.rst` | Doc | How receive is batched and moved to softirq |

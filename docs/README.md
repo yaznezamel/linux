@@ -29,6 +29,7 @@ official kernel documentation lives in [`Documentation/`](../Documentation).
 | [c-in-the-kernel.md](c-in-the-kernel.md) | C idioms the kernel uses everywhere |
 | [networking/README.md](networking/README.md) | Map of the networking code and a reading order |
 | [networking/packet-path.md](networking/packet-path.md) | The life of a packet, function by function |
+| [networking/01-dummy-driver.md](networking/01-dummy-driver.md) | First code to read, with a traced experiment |
 | [contributing.md](contributing.md) | How to send a first patch, and where |
 | [brag-sheet.md](brag-sheet.md) | Facts and numbers for talking about Linux |
 | [learning-log.md](learning-log.md) | Dated log of sessions |
