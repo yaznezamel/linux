@@ -75,9 +75,17 @@ exit                             # powers the VM off
 vng -- uname -r                  # or: boot, run one command, power off
 ```
 
-`vng` appends `-virtme` to the version string. Rebuild with the same
-`vng --build ...` command; plain `make` uses a different version string and
-recompiles more than it needs to.
+`vng` appends `-virtme` to the version string. Rebuild with `vng --build`;
+plain `make` uses a different version string and recompiles more than it
+needs to.
+
+`--configitem` only takes effect when `.config` is first created. To change an
+option later, edit `.config` and then rebuild:
+
+```sh
+scripts/config -e DUMMY && make olddefconfig
+vng --build
+```
 
 Timings checked on this tree (v7.3-rc6, 4 CPU cores, 15 GB RAM, no KVM):
 
