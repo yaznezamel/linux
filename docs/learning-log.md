@@ -6,7 +6,7 @@ a study-notes file.
 Format:
 
 ```text
-## YYYY-MM-DD - Phase N - topic (time spent)
+## YYYY-MM-DD - Wnn - topic (time spent)
 - Did:
 - Learned:
 - Stuck on:
@@ -14,6 +14,12 @@ Format:
 ```
 
 ---
+
+## 2026-10-10 - plan change
+
+- Did: replaced the 20-week roadmap with The New Linus (12 weeks, ends Dec 31).
+  Folder guides are `NEW_LINUS.md` files across the tree; labs are in `labs/`.
+- Next: W01, build the learning config and finish lab 01.
 
 ## 2026-10-07 - Phase 0 - project kickoff
 
